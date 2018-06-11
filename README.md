@@ -25,7 +25,7 @@ puts c.chain_get_info
     
   in general
   
-    /v1/endpoint/method => endpoint_method
+    /v1/api/method => api_method
 
 ## Credits
 
