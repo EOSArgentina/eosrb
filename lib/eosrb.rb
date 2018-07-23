@@ -4,9 +4,14 @@ require 'faraday'
 module EOS
   class Client
 
-    def initialize(server='http://localhost:8888')
+    def initialize(server='http://localhost:8888', hc=false)
       @server = server
+      @hc = hc
       load_specs
+    end
+
+    def self.ar
+      new('https://api.eosargentina.io')
     end
 
     private
@@ -44,13 +49,14 @@ module EOS
 
     def method_missing(method_name, *args, &block)
       if respond_to_missing?(method_name)
-        api_call(method_name, args)
+        api_call(method_name, args.first)
       else
         super
       end
     end
 
     def respond_to_missing?(method_name, include_private = false)
+      return true if @hc
       api, endpoint = extract_endpoint(method_name)
       @specs.key?(api) && @specs[api].key?(endpoint)
     end
@@ -59,16 +65,28 @@ module EOS
       name.to_s.split('_',2)
     end
 
+    def known_params(method_name)
+      api, endpoint = extract_endpoint(method_name)
+      return {} unless @specs[api] && @specs[api][endpoint]
+      @specs[api][endpoint]['params'] || {}
+    end
+
+    def path(method_name)
+      api, endpoint = extract_endpoint(method_name)
+      "/#{version}/#{api}/#{endpoint}"
+    end
+
     # The actual http call
     def api_call(method_name, args)
-      api, endpoint = extract_endpoint(method_name)
-      body = {}
-      @specs[api][endpoint]['params'].to_a.each do |type, param_name|
-        body[param_name] = args.shift
-      end
+      args ||= {}
+      known = known_params(method_name)
+      body = @hc ? args : args.select{ |key, _| known.include?(key.to_s) }
+      post path(method_name), body
+    end
 
-      response = connection.post "/#{version}/#{api}/#{endpoint}", body.to_json
-
+    def post(path, body)
+      headers = {'Content-Type' => 'application/json'}
+      response = connection.post path, body.to_json, headers
       JSON.parse(response.body)
     end
   end

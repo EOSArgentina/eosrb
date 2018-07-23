@@ -25,6 +25,16 @@
     }
   },
 
+  "get_abi": {
+    "params": {
+      "account_name": "name"
+    },
+    "results": {
+      "account_name": "name",
+      "abi": "abi_def?"
+    }
+  },
+
   "get_account": {
     "brief": "Fetch a blockchain account",
     "params": {
@@ -119,7 +129,28 @@
       "block_net_limit" : "uint64"
     }
   },
-
+  "get_producers": {
+    "brief": "Fetch smart contract data from producer.",
+    "params": {
+      "json": { "type": "bool", "default": false},
+      "lower_bound": "string",
+      "limit": {"type": "uint32", "default": "10"}
+    },
+    "results": {
+      "rows": {
+        "type": "vector",
+        "doc": "one row per item, either encoded as hex String or JSON object"
+      },
+      "total_producer_vote_weight": {
+        "type": "float64",
+        "doc": "total vote"
+      },
+      "more": {
+        "type": "string",
+        "doc": "fill lower_bound with this value to fetch more rows"
+      }
+    }
+  },
   "get_required_keys": {
     "params": {
       "transaction": "transaction",
