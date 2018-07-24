@@ -77,7 +77,17 @@
       "unknown block": null
     }
   },
-
+  "get_block_header_state": {
+    "brief": "Fetch the minimum state necessary to validate transaction headers.",
+    "params": {
+      "block_num_or_id": "string"
+    },
+    "results": "string",
+    "errors": {
+      "block_id_type_exception": "Invalid block ID",
+      "unknown_block_exception": "Could not find reversible block"
+    }
+  },
   "get_code": {
     "brief": "Fetch smart contract code",
     "params": {
@@ -151,6 +161,25 @@
       }
     }
   },
+  "get_producer_schedule": {
+    "brief": "",
+    "params": {},
+    "results": {
+      "vector": "active",
+      "vector": "pending",
+      "vector": "proposed"
+    }
+  },
+  "get_raw_code_and_abi": {
+    "params": {
+      "account_name": "name"
+    },
+    "results": {
+      "account_name": "name",
+      "wasm": "bytes",
+      "abi": "abi_def?"
+    }
+  },
   "get_required_keys": {
     "params": {
       "transaction": "transaction",
@@ -158,7 +187,21 @@
     },
     "results": "Set[public_key]"
   },
-
+  "get_scheduled_transactions": {
+    "brief": "",
+    "params": {
+      "json": { "type": "bool", "default": false},
+      "lower_bound": {"type": "string", "doc": "timestamp OR transaction ID"},
+      "limit": {"type": "uint32", "default": "50"}
+    },
+    "results": {
+      "vector": "transactions",
+      "more": {
+        "type": "string",
+        "doc": "fill lower_bound with this to fetch next set of transactions"
+      }
+    }
+  },
   "get_table_rows": {
     "brief": "Fetch smart contract data from an account.",
     "params": {

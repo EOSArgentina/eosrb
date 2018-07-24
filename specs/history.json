@@ -35,5 +35,21 @@
       "last_irreversible_block": "uint32",
       "traces": "variant[]"
     }
+  },
+  "get_key_accounts": {
+    "params": {
+      "public_key": "public_key_type"
+    },
+    "results": {
+      "account_names": "account_name[]"
+    }
+  },
+  "get_controlled_accounts": {
+    "params": {
+      "controlling_account": "account_name"
+    },
+    "results": {
+      "controlled_accounts": "account_name[]"
+    }
   }
 }
