@@ -47,4 +47,4 @@ puts prods.include?('argentinaeos') ? 'awsm!' : 'aycaramba!'
 
 ## Credits
 
-  Ruby implementation by [EOS Argentina](http://eosargentina.io/). API Specs based on [py-eos-api](https://github.com/Netherdrake/py-eos-api) and [eosjs-api](https://raw.githubusercontent.com/EOSIO/eosjs-api).
+  Ruby implementation by [EOS Argentina](http://eosargentina.io/). API Specs based on [py-eos-api](https://github.com/Netherdrake/py-eos-api) and [eosjs-api](https://github.com/EOSIO/eosjs-api).
